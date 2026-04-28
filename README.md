@@ -4,7 +4,36 @@
 
 ---
 
-## Architecture
+## 🎯 Problem Statement & Solution
+
+**Problem**: 
+Home service booking (plumbing, electrical, etc.) is traditionally fragmented, lacking real-time availability, transparent pricing, and efficient matching. Users often struggle with manual coordination and lack of immediate support for common queries.
+
+**Solution**:
+A unified AI-driven platform that automates the technician discovery and booking lifecycle. By integrating a **Multi-Agent Orchestrator**, **RAG-based FAQ**, and **MCP-compatible tools**, the system provides:
+- **Instant Matching**: Autonomous agents find the best technician based on skill and distance.
+- **Agentic Booking**: Natural language interface for end-to-end booking.
+- **Smart Support**: RAG pipeline for instant, context-aware answers to service questions.
+- **Safety First**: Built-in guardrails for validation and security.
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React, Vite, Tailwind CSS, Socket.io-client, React Router, Leaflet (Maps) |
+| **Backend** | Node.js, Express, Socket.io, Mongoose, Zod, JWT |
+| **AI / RAG** | Transformers.js (all-MiniLM-L6-v2), HNSW Vector Index, OpenAI API |
+| **Agents** | Custom Multi-Agent Orchestration (Intent, Matching, Booking agents) |
+| **Infrastructure** | MCP (Model Context Protocol), MongoDB (In-Memory for Dev) |
+| **Observability** | Winston (Structured Logs), Morgan (HTTP Logs) |
+
+---
+
+## 🏗 Architecture
+
+![Architecture Diagram](./public/architecture_diagram.png)
 
 ```mermaid
 graph TD
@@ -55,8 +84,6 @@ graph TD
     RAG --> EMB --> VDB --> GEN
     Agents --> API
 ```
-
----
 
 ---
 
@@ -112,8 +139,6 @@ The system is pre-seeded with the following accounts for testing:
 
 ---
 
----
-
 ## Connecting MCP Server to Claude Desktop
 
 Add this to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on Mac or `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
@@ -166,8 +191,6 @@ npm run test:integration  # Integration tests (requires MongoDB)
 
 ---
 
----
-
 ## Log Files
 
 All logs are written to `/logs/`:
@@ -182,6 +205,17 @@ All logs are written to `/logs/`:
 
 ---
 
+## 🚀 Proposed Roadmap
+
+- [ ] **Real-world Payment Integration**: Connect Stripe or PayPal for secure transactions.
+- [ ] **Voice Interface**: Enable voice-based booking via Whisper and TTS.
+- [ ] **Advanced Agent Negotiation**: Allow agents to negotiate pricing/time slots based on technician availability.
+- [ ] **Geofencing**: Automated check-in/check-out for technicians using GPS.
+- [ ] **Multi-provider MCP**: Connect to third-party CRM systems via MCP.
+
+---
+
 ## License
 
 MIT
+
