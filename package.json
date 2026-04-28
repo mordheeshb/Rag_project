@@ -1,24 +1,29 @@
 {
-  "name": "rag_project",
-  "version": "0.1.0",
+  "name": "instant-technician-booker-monorepo",
+  "version": "1.0.0",
   "private": true,
+  "description": "Monorepo for the Instant Technician Booker platform",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "mcp-server",
+    "agents",
+    "rag",
+    "tests"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.2.4",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "install:all": "npm install && npm run install:workspaces",
+    "install:workspaces": "npm install -w frontend -w backend -w mcp-server -w agents -w rag -w tests",
+    "seed": "npm run seed --workspace=backend",
+    "test": "npm test --workspace=tests",
+    "embed": "npm run embed --workspace=rag",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev:rag": "npm run dev --workspace=rag",
+    "dev:agents": "npm run dev --workspace=agents",
+    "dev:all": "npx concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:rag\" \"npm run dev:agents\""
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.4",
-    "typescript": "^5"
+    "concurrently": "^8.2.2"
   }
 }

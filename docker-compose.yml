@@ -1,0 +1,88 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: itb-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: instant_technician_booker
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: itb-backend
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/instant_technician_booker
+      - JWT_SECRET=${JWT_SECRET:-change_this_in_production}
+      - NODE_ENV=production
+      - PORT=3000
+      - FRONTEND_URL=http://localhost:5173
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    command: sh -c "npm start && node src/seeds/seed.js"
+
+  rag:
+    build: ./rag
+    container_name: itb-rag
+    restart: unless-stopped
+    ports:
+      - '3002:3002'
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - RAG_PORT=3002
+    depends_on:
+      - backend
+    volumes:
+      - ./logs:/app/logs
+
+  agents:
+    build: ./agents
+    container_name: itb-agents
+    restart: unless-stopped
+    ports:
+      - '3003:3003'
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - BACKEND_URL=http://backend:3000
+      - AGENT_PORT=3003
+    depends_on:
+      - backend
+
+  mcp-server:
+    build: ./mcp-server
+    container_name: itb-mcp
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/instant_technician_booker
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: itb-frontend
+    restart: unless-stopped
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
