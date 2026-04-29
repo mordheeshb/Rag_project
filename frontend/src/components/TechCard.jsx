@@ -64,13 +64,23 @@ export default function TechCard({ tech, onBook }) {
         </div>
       </div>
 
-      {/* Skills */}
+      {/* Skills & Certs */}
       <div className="flex flex-wrap gap-2 mb-4">
         {tech.skills?.map(skill => (
           <span key={skill} className="badge bg-brand-orange/10 text-brand-orange border border-brand-orange/20">
-            {SKILL_ICONS[skill]} {skill.replace('_', ' ')}
+            {SKILL_ICONS[skill] || '🛠️'} {skill.replace('_', ' ')}
           </span>
         ))}
+        {tech.certifications?.map(cert => (
+          <span key={cert} className="badge bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            🛡️ {cert}
+          </span>
+        ))}
+      </div>
+
+      <div className="text-xs text-gray-500 mb-4 flex items-center gap-2">
+        <span>📅 {tech.experienceYears || 0} years experience</span>
+        {tech.certifications?.length > 0 && <span>• ✅ Certified Industrial Pro</span>}
       </div>
 
       {/* Distance + ETA */}

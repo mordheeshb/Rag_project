@@ -93,7 +93,7 @@ const loginSchema = z.object({
 
 const bookingSchema = z.object({
   technicianId: z.string().min(1),
-  serviceType: z.enum(['plumber', 'electrician', 'ac_repair', 'carpenter', 'painter', 'appliance_repair', 'mason', 'cleaner']),
+  serviceType: z.enum(['plumber', 'electrician', 'ac_repair', 'carpenter', 'painter', 'appliance_repair', 'mason', 'cleaner', 'hvac_industrial', 'industrial_electrician', 'welder']),
   userLat: z.number(),
   userLng: z.number(),
   description: z.string().max(500).optional(),

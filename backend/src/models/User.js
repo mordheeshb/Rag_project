@@ -34,8 +34,16 @@ const userSchema = new mongoose.Schema(
     // Only relevant for technicians
     skills: {
       type: [String],
-      enum: ['plumber', 'electrician', 'ac_repair', 'carpenter', 'painter', 'appliance_repair', 'mason', 'cleaner'],
+      enum: ['plumber', 'electrician', 'ac_repair', 'carpenter', 'painter', 'appliance_repair', 'mason', 'cleaner', 'hvac_industrial', 'industrial_electrician', 'welder'],
       default: [],
+    },
+    certifications: {
+      type: [String],
+      default: [], // e.g. ["OSHA-30", "ISO-9001", "Certified Electrician"]
+    },
+    experienceYears: {
+      type: Number,
+      default: 0,
     },
     isAvailable: {
       type: Boolean,

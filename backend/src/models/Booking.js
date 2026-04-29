@@ -58,6 +58,21 @@ const bookingSchema = new mongoose.Schema(
       default: '',
       maxlength: 500,
     },
+    // Industrial safety & audit fields
+    safetyChecklist: [
+      {
+        task: { type: String, required: true },
+        isCompleted: { type: Boolean, default: false },
+        completedAt: { type: Date, default: null },
+      }
+    ],
+    auditTrail: [
+      {
+        status: { type: String, required: true },
+        timestamp: { type: Date, default: Date.now },
+        note: { type: String, default: '' },
+      }
+    ],
     completedAt: {
       type: Date,
       default: null,
@@ -70,7 +85,7 @@ const bookingSchema = new mongoose.Schema(
  * Instance method to validate and apply a status transition.
  * Enforces the state machine — throws on invalid transitions.
  */
-bookingSchema.methods.transitionTo = function (newStatus) {
+bookingSchema.methods.transitionTo = function (newStatus, note = '') {
   const allowed = VALID_TRANSITIONS[this.status];
   if (!allowed.includes(newStatus)) {
     const err = new Error(
@@ -79,6 +94,14 @@ bookingSchema.methods.transitionTo = function (newStatus) {
     err.code = 'INVALID_TRANSITION';
     throw err;
   }
+  
+  // Record transition in audit trail
+  this.auditTrail.push({
+    status: newStatus,
+    timestamp: new Date(),
+    note: note || `Status changed from ${this.status} to ${newStatus}`
+  });
+
   this.status = newStatus;
   if (newStatus === 'completed') this.completedAt = new Date();
   return this;

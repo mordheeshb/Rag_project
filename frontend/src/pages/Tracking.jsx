@@ -169,6 +169,33 @@ export default function Tracking() {
             </div>
           </div>
         </div>
+
+        {/* Industrial Audit Log */}
+        <div className="card md:col-span-3">
+          <h3 className="text-xs font-semibold text-gray-400 mb-4 uppercase tracking-wide flex items-center gap-2">
+            📜 Industrial Audit Log <span className="badge bg-brand-orange/10 text-brand-orange border-none text-[10px]">Verified</span>
+          </h3>
+          <div className="space-y-4">
+            {booking.auditTrail?.map((log, i) => (
+              <div key={i} className="flex gap-4 items-start relative pb-4 last:pb-0">
+                {i < booking.auditTrail.length - 1 && (
+                  <div className="absolute left-1.5 top-5 bottom-0 w-0.5 bg-brand-border" />
+                )}
+                <div className="w-3 h-3 rounded-full bg-brand-orange mt-1.5 z-10" />
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="text-sm font-bold text-white capitalize">{log.status.replace('_', ' ')}</p>
+                    <p className="text-[10px] text-gray-500">{new Date(log.timestamp).toLocaleString()}</p>
+                  </div>
+                  <p className="text-xs text-gray-400 italic">"{log.note}"</p>
+                </div>
+              </div>
+            ))}
+            {(!booking.auditTrail || booking.auditTrail.length === 0) && (
+              <p className="text-xs text-gray-500 text-center py-4">Initializing audit trail...</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

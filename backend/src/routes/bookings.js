@@ -104,7 +104,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
  */
 router.patch('/:id/status', authMiddleware, async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, note } = req.body;
     if (!status) return res.status(400).json({ success: false, message: 'status is required' });
 
     const booking = await Booking.findById(req.params.id);
@@ -122,11 +122,11 @@ router.patch('/:id/status', authMiddleware, async (req, res) => {
     }
 
     // Apply state machine transition (throws on invalid)
-    booking.transitionTo(status);
+    booking.transitionTo(status, note);
     await booking.save();
 
     // Real-time event: notify all listeners of status change
-    emitEvent(req, 'booking:status_changed', { bookingId: booking._id, status });
+    emitEvent(req, 'booking:status_changed', { bookingId: booking._id, status, note });
 
     logger.info('Booking status updated', { bookingId: booking._id, newStatus: status });
 

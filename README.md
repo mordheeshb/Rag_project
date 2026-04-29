@@ -15,6 +15,7 @@ A unified AI-driven platform that automates the technician discovery and booking
 - **Agentic Booking**: Natural language interface for end-to-end booking.
 - **Smart Support**: RAG pipeline for instant, context-aware answers to service questions.
 - **Safety First**: Built-in guardrails for validation and security.
+- **Industrial Compliance**: Integrated safety checklists and verifiable audit trails for mission-critical tasks.
 
 ---
 
@@ -26,6 +27,7 @@ A unified AI-driven platform that automates the technician discovery and booking
 | **Backend** | Node.js, Express, Socket.io, Mongoose, Zod, JWT |
 | **AI / RAG** | Transformers.js (all-MiniLM-L6-v2), HNSW Vector Index, OpenAI API |
 | **Agents** | Custom Multi-Agent Orchestration (Intent, Matching, Booking agents) |
+| **Industrial Specs** | Safety Checklists, Audit Trails (Immutable state logs), Certifications (OSHA, ISO) |
 | **Infrastructure** | MCP (Model Context Protocol), MongoDB (In-Memory for Dev) |
 | **Observability** | Winston (Structured Logs), Morgan (HTTP Logs) |
 
@@ -87,6 +89,17 @@ graph TD
 
 ---
 
+## 🛡 Industrial Compliance & Safety
+
+This platform is engineered for industrial environments where safety and documentation are non-negotiable:
+
+*   **Verified Audit Trail**: Every status transition is logged with a mandatory work note and timestamp, creating an immutable history of the service event.
+*   **Safety Checklists**: Technicians must sign off on safety protocols (PPE, Site Inspection, Power Isolation) before starting work.
+*   **Certification Management**: Integrated support for tracking professional certifications (OSHA, ISO, NATE) to ensure only compliant technicians are dispatched.
+*   **Specialized Skillsets**: Includes roles for Industrial Electricians, Welders, and HVAC Industrial Specialists.
+
+---
+
 ## Key Concepts Implemented
 
 | Concept | Implementation |
@@ -94,6 +107,7 @@ graph TD
 | **MCP** | Custom Model Context Protocol server exposing 4 tools (`find_technicians`, `create_booking`, etc.) — compatible with Claude Desktop |
 | **RAG** | Local embedding (all-MiniLM-L6-v2) + vector index over FAQ Q&A pairs, with OpenAI generation and fallback |
 | **Multi-Agent** | 3-agent pipeline: IntentAgent (classify) → MatchingAgent (rank) → BookingAgent (confirm), with reasoning logged |
+| **Audit Log** | Real-time, verifiable work logs and status transition history stored per-booking |
 | **Guardrails** | Profanity filter, 50km distance check, skill mismatch validation, Zod schema validation, rate limiting (20 req/min) |
 | **Observability** | Winston structured JSON logs, Morgan HTTP logs, agent reasoning log, RAG query log, guardrail violation log |
 
