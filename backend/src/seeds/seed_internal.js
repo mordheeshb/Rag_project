@@ -47,6 +47,50 @@ async function seedInternal() {
     );
 
     logger.info(`✅ Seeded ${seededTechs.length} technicians and ${seededUsers.length} customers into in-memory database`);
+
+    // Seed Active Bookings for Demo
+    const Booking = require('../models/Booking');
+    await Booking.deleteMany({});
+    
+    const vikram = seededTechs.find(t => t.name === 'Vikram Singh');
+    const demoUser = seededUsers[0];
+
+    if (vikram && demoUser) {
+      await Booking.create([
+        {
+          userId: demoUser._id,
+          technicianId: vikram._id,
+          serviceType: 'industrial_electrician',
+          status: 'pending',
+          userLocation: { lat: 13.0827, lng: 80.2707 },
+          description: 'Factory floor main panel is sparking. Need immediate inspection.',
+          distanceKm: 2.4,
+          eta: 15,
+          auditTrail: [{ status: 'pending', note: 'Booking initiated by customer' }]
+        },
+        {
+          userId: demoUser._id,
+          technicianId: vikram._id,
+          serviceType: 'industrial_electrician',
+          status: 'en_route',
+          userLocation: { lat: 13.1000, lng: 80.2800 },
+          description: 'Routine maintenance of heavy machinery circuit breakers.',
+          distanceKm: 5.1,
+          eta: 25,
+          safetyChecklist: [
+            { task: 'Check PPE', isCompleted: true, completedAt: new Date() },
+            { task: 'Site Inspection', isCompleted: true, completedAt: new Date() },
+            { task: 'Power Isolated', isCompleted: false }
+          ],
+          auditTrail: [
+            { status: 'pending', note: 'Scheduled maintenance' },
+            { status: 'accepted', note: 'Technician accepted the job' },
+            { status: 'en_route', note: 'Technician is travelling to the site' }
+          ]
+        }
+      ]);
+      logger.info('🚀 Seeded active industrial bookings for Vikram Singh');
+    }
   } catch (err) {
     logger.error('Internal seed failed:', { error: err.message });
   }

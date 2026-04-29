@@ -100,6 +100,18 @@ This platform is engineered for industrial environments where safety and documen
 
 ---
 
+## 🔑 Demo Credentials (Industrial Dataset)
+
+The system is pre-seeded with active industrial bookings for immediate testing.
+
+| Role | Email | Password | Pre-seeded Data |
+| :--- | :--- | :--- | :--- |
+| **Industrial Electrician** | `vikram@itb.dev` | `Tech@1234` | 2 Active Industrial Jobs |
+| **HVAC Specialist** | `amit@itb.dev` | `Tech@1234` | Profile with ISO/Welding Certs |
+| **Demo Customer** | `customer@itb.dev` | `User@1234` | Active booking history |
+
+---
+
 ## Key Concepts Implemented
 
 | Concept | Implementation |

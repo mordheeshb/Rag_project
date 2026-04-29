@@ -28,7 +28,7 @@ const bookingSchema = new mongoose.Schema(
     },
     serviceType: {
       type: String,
-      enum: ['plumber', 'electrician', 'ac_repair', 'carpenter', 'painter', 'appliance_repair', 'mason', 'cleaner'],
+      enum: ['plumber', 'electrician', 'ac_repair', 'carpenter', 'painter', 'appliance_repair', 'mason', 'cleaner', 'hvac_industrial', 'industrial_electrician', 'welder'],
       required: true,
     },
     status: {
